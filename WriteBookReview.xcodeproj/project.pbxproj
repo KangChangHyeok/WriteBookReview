@@ -13,6 +13,8 @@
 		273DCD872897C97E0031CD2D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 273DCD862897C97E0031CD2D /* Assets.xcassets */; };
 		273DCD8A2897C97E0031CD2D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 273DCD882897C97E0031CD2D /* LaunchScreen.storyboard */; };
 		273DCD922897CD940031CD2D /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273DCD912897CD940031CD2D /* UIViewController.swift */; };
+		273DCD9528980DDB0031CD2D /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273DCD9328980DDA0031CD2D /* MainCollectionViewCell.swift */; };
+		273DCD9628980DDB0031CD2D /* MainCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 273DCD9428980DDA0031CD2D /* MainCollectionViewCell.xib */; };
 		4806F5C74A2398E4D572BC4B /* Pods_WriteBookReview.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C0E8032DACD3AA76531340 /* Pods_WriteBookReview.framework */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +27,8 @@
 		273DCD892897C97E0031CD2D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		273DCD8B2897C97E0031CD2D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		273DCD912897CD940031CD2D /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		273DCD9328980DDA0031CD2D /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
+		273DCD9428980DDA0031CD2D /* MainCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainCollectionViewCell.xib; sourceTree = "<group>"; };
 		31251BE3796D51FC87F1D120 /* Pods-WriteBookReview.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WriteBookReview.release.xcconfig"; path = "Target Support Files/Pods-WriteBookReview/Pods-WriteBookReview.release.xcconfig"; sourceTree = "<group>"; };
 		76C0E8032DACD3AA76531340 /* Pods_WriteBookReview.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WriteBookReview.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B40A0AB7313BAEDA7E8165D7 /* Pods-WriteBookReview.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WriteBookReview.debug.xcconfig"; path = "Target Support Files/Pods-WriteBookReview/Pods-WriteBookReview.debug.xcconfig"; sourceTree = "<group>"; };
@@ -70,6 +74,8 @@
 				273DCD882897C97E0031CD2D /* LaunchScreen.storyboard */,
 				273DCD8B2897C97E0031CD2D /* Info.plist */,
 				273DCD912897CD940031CD2D /* UIViewController.swift */,
+				273DCD9328980DDA0031CD2D /* MainCollectionViewCell.swift */,
+				273DCD9428980DDA0031CD2D /* MainCollectionViewCell.xib */,
 			);
 			path = WriteBookReview;
 			sourceTree = "<group>";
@@ -152,6 +158,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				273DCD8A2897C97E0031CD2D /* LaunchScreen.storyboard in Resources */,
+				273DCD9628980DDB0031CD2D /* MainCollectionViewCell.xib in Resources */,
 				273DCD872897C97E0031CD2D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -207,6 +214,7 @@
 			files = (
 				273DCD822897C97D0031CD2D /* ViewController.swift in Sources */,
 				273DCD7E2897C97D0031CD2D /* AppDelegate.swift in Sources */,
+				273DCD9528980DDB0031CD2D /* MainCollectionViewCell.swift in Sources */,
 				273DCD922897CD940031CD2D /* UIViewController.swift in Sources */,
 				273DCD802897C97D0031CD2D /* SceneDelegate.swift in Sources */,
 			);
