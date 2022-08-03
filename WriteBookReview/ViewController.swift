@@ -12,16 +12,30 @@ import SwiftUI
 
 struct VCPreView:PreviewProvider {
     static var previews: some View {
-        UINavigationController(rootViewController: MainViewController()).toPreview()
+        Group {
+            UINavigationController(rootViewController: MainViewController()).toPreview()
+            UINavigationController(rootViewController: MainViewController()).toPreview().previewDevice("iPhone 8")
+        }
     }
 }
 
 class MainViewController: UIViewController {
     
-    private let mainColletionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
-        $0.backgroundColor = .gray
-        $0.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
-    }
+    
+    private var mainColletionView: UICollectionView = {
+        //UICollectionViewFlowLayout
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+//        layout.minimumLineSpacing = 10
+//        layout.minimumInteritemSpacing = 10
+        //위에서 만든 FlowLayout을 바탕으로 ColletionView 생성
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+            collectionView.backgroundColor = .gray
+            collectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+        return collectionView
+    }()
+
     private let searchButton = UIButton().then {
         $0.setTitle("내가 읽은 책 찾기", for: .normal)
         $0.tintColor = .black
@@ -48,7 +62,7 @@ class MainViewController: UIViewController {
         navigationItem.scrollEdgeAppearance = appearance
         
         //navigation bar button item 추가하기
-        let rightNavigationItem = UIBarButtonItem(title: "right", style: .plain, target: self, action: #selector(touched))
+        let rightNavigationItem = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(touched))
         navigationItem.rightBarButtonItem = rightNavigationItem
         //collectionView
         mainColletionView.delegate = self
@@ -68,11 +82,10 @@ class MainViewController: UIViewController {
             $0.bottom.equalTo(searchButton.snp.top)
         }
         //하단 검색하기 버튼 레이아웃 설정
-        
         self.searchButton.snp.makeConstraints {
             $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.bottom.equalToSuperview()
-            $0.height.equalTo(100)
+            $0.height.equalTo(view.frame.height / 10)
         }
     }
     
@@ -84,7 +97,7 @@ class MainViewController: UIViewController {
 
 extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return 8
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -96,8 +109,15 @@ extension MainViewController: UICollectionViewDataSource {
     
 }
 
-extension MainViewController: UICollectionViewDelegate {
+extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let collectionViewWidth = collectionView.bounds.width
+        let collectionViewHeight = collectionView.bounds.height
+        let cellWidth = (collectionViewWidth / 2) - 15
+        let cellHeight = (collectionViewHeight / 2) - 15
+        return CGSize(width: cellWidth, height: cellHeight)
+    }
 }
 
 
