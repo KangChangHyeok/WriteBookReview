@@ -65,16 +65,80 @@
 		273DCD7C2897C97D0031CD2D /* WriteBookReview */ = {
 			isa = PBXGroup;
 			children = (
-				273DCD7D2897C97D0031CD2D /* AppDelegate.swift */,
-				273DCD7F2897C97D0031CD2D /* SceneDelegate.swift */,
-				273DCD812897C97D0031CD2D /* ViewController.swift */,
-				273DCD97289A506D0031CD2D /* MainCollectionViewCell.swift */,
-				273DCD862897C97E0031CD2D /* Assets.xcassets */,
-				273DCD882897C97E0031CD2D /* LaunchScreen.storyboard */,
+				273DCD99289A5D750031CD2D /* Resources */,
+				273DCD9A289A5D830031CD2D /* Sources */,
 				273DCD8B2897C97E0031CD2D /* Info.plist */,
-				273DCD912897CD940031CD2D /* UIViewController.swift */,
 			);
 			path = WriteBookReview;
+			sourceTree = "<group>";
+		};
+		273DCD99289A5D750031CD2D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				273DCD9D289A5DD50031CD2D /* Extension */,
+				273DCD9C289A5DC40031CD2D /* Assets */,
+				273DCD9B289A5DB70031CD2D /* Storyboards */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		273DCD9A289A5D830031CD2D /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				273DCD7D2897C97D0031CD2D /* AppDelegate.swift */,
+				273DCD7F2897C97D0031CD2D /* SceneDelegate.swift */,
+				273DCD9E289A5E030031CD2D /* Models */,
+				273DCD9F289A5E0A0031CD2D /* Controllers */,
+				273DCDA0289A5E130031CD2D /* Cells */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		273DCD9B289A5DB70031CD2D /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				273DCD882897C97E0031CD2D /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		273DCD9C289A5DC40031CD2D /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				273DCD862897C97E0031CD2D /* Assets.xcassets */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		273DCD9D289A5DD50031CD2D /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				273DCD912897CD940031CD2D /* UIViewController.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		273DCD9E289A5E030031CD2D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		273DCD9F289A5E0A0031CD2D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				273DCD812897C97D0031CD2D /* ViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		273DCDA0289A5E130031CD2D /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				273DCD97289A506D0031CD2D /* MainCollectionViewCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		8368BC280ABD52252FDEC35C /* Pods */ = {
