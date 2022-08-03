@@ -27,8 +27,6 @@ class MainViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-//        layout.minimumLineSpacing = 10
-//        layout.minimumInteritemSpacing = 10
         //위에서 만든 FlowLayout을 바탕으로 ColletionView 생성
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
             collectionView.backgroundColor = .gray
@@ -36,12 +34,17 @@ class MainViewController: UIViewController {
         return collectionView
     }()
 
-    private let searchButton = UIButton().then {
-        $0.setTitle("내가 읽은 책 찾기", for: .normal)
-        $0.tintColor = .black
-        $0.titleLabel?.font = .systemFont(ofSize: 20)
-        $0.backgroundColor = .black
-    }
+    private let searchButton: UIButton = {
+        let searchBookButton = UIButton()
+        searchBookButton.setTitle("내가 읽은 책 찾기", for: .normal)
+        searchBookButton.tintColor = .black
+        searchBookButton.titleLabel?.font = .systemFont(ofSize: 20)
+        searchBookButton.backgroundColor = .black
+        searchBookButton.addTarget(self, action: #selector(searchBookButtonTapped), for: .touchUpInside)
+        return searchBookButton
+    }()
+       
+    
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,10 +63,10 @@ class MainViewController: UIViewController {
         appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
         navigationItem.standardAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
-        
         //navigation bar button item 추가하기
-        let rightNavigationItem = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(touched))
-        navigationItem.rightBarButtonItem = rightNavigationItem
+        let rightBarButton = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(rigthBarButtonTouched))
+        rightBarButton.tintColor = .black
+        navigationItem.rightBarButtonItem = rightBarButton
         //collectionView
         mainColletionView.delegate = self
         mainColletionView.dataSource = self
@@ -89,8 +92,13 @@ class MainViewController: UIViewController {
         }
     }
     
-    @objc func touched() {
+    @objc func rigthBarButtonTouched() {
         print("touch")
+        
+    }
+    
+    @objc func searchBookButtonTapped() {
+        navigationController?.pushViewController(SearchBookViewController(), animated: true)
     }
     
 }
