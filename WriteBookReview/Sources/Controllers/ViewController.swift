@@ -9,74 +9,68 @@ import UIKit
 import Then
 import SnapKit
 import SwiftUI
-
-struct VCPreView:PreviewProvider {
-    static var previews: some View {
-        Group {
-            UINavigationController(rootViewController: MainViewController()).toPreview()
-            UINavigationController(rootViewController: MainViewController()).toPreview().previewDevice("iPhone 8")
-        }
-    }
-}
+//@available(iOS 14.0, *)
+//struct VCPreView:PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            UINavigationController(rootViewController: MainViewController()).toPreview().ignoresSafeArea()
+//            UINavigationController(rootViewController: MainViewController()).toPreview().previewDevice("iPhone 8")
+//        }
+//    }
+//}
 
 class MainViewController: UIViewController {
+    //MARK: - UI Configure
+    //navigation Controller 에러 해결 코드
+    private lazy var appearance = UINavigationBarAppearance().then {
+        $0.configureWithTransparentBackground()
+        $0.backgroundColor = UIColor.systemBackground
+        $0.titleTextAttributes = [.foregroundColor: UIColor.black]
+        navigationItem.standardAppearance = $0
+        navigationItem.scrollEdgeAppearance = $0
+    }
+    
+    private var mainCollectionViewFlowLayout = UICollectionViewFlowLayout().then {
+        $0.scrollDirection = .vertical
+        $0.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+    }
+    private lazy var mainColletionView = UICollectionView(frame: .zero, collectionViewLayout: mainCollectionViewFlowLayout).then {
+        $0.delegate = self
+        $0.dataSource = self
+        $0.backgroundColor = .gray
+        $0.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+    }
+    
+    private let searchButton = UIButton().then {
+        $0.setTitle("내가 읽은 책 찾기", for: .normal)
+        $0.tintColor = .black
+        $0.titleLabel?.font = .systemFont(ofSize: 20)
+        $0.backgroundColor = .black
+        $0.addTarget(self, action: #selector(searchBookButtonTapped), for: .touchUpInside)
+    }
     
     
-    private var mainColletionView: UICollectionView = {
-        //UICollectionViewFlowLayout
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        //위에서 만든 FlowLayout을 바탕으로 ColletionView 생성
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-            collectionView.backgroundColor = .gray
-            collectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
-        return collectionView
-    }()
-
-    private let searchButton: UIButton = {
-        let searchBookButton = UIButton()
-        searchBookButton.setTitle("내가 읽은 책 찾기", for: .normal)
-        searchBookButton.tintColor = .black
-        searchBookButton.titleLabel?.font = .systemFont(ofSize: 20)
-        searchBookButton.backgroundColor = .black
-        searchBookButton.addTarget(self, action: #selector(searchBookButtonTapped), for: .touchUpInside)
-        return searchBookButton
-    }()
-       
-    
-        
+    //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpValue()
         setUpView()
         setUpConstraints()
     }
+    //MARK: - setUpValue
     func setUpValue() {
-        //뷰 배경화면 색 설정
         view.backgroundColor = .systemBackground
-        
-        //navigation Controller 에러 해결 코드
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = UIColor.systemBackground
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
-        navigationItem.standardAppearance = appearance
-        navigationItem.scrollEdgeAppearance = appearance
-        //navigation bar button item 추가하기
-        let rightBarButton = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(rigthBarButtonTouched))
+        var rightBarButton = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(rigthBarButtonTouched))
         rightBarButton.tintColor = .black
         navigationItem.rightBarButtonItem = rightBarButton
-        //collectionView
-        mainColletionView.delegate = self
-        mainColletionView.dataSource = self
-        
-        
     }
+    //MARK: - setUpView
     func setUpView() {
-        view.addSubview(searchButton)
-        view.addSubview(mainColletionView)
+        [searchButton, mainColletionView].forEach {
+            view.addSubview($0)
+        }
     }
+    //MARK: - setUpConstraints
     func setUpConstraints() {
         //컬렉션뷰 레이아웃 설정
         self.mainColletionView.snp.makeConstraints {
@@ -102,7 +96,7 @@ class MainViewController: UIViewController {
     }
     
 }
-
+//MARK: - extension
 extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 8
@@ -113,8 +107,6 @@ extension MainViewController: UICollectionViewDataSource {
         cell.backgroundColor = .white
         return cell
     }
-    
-    
 }
 
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {

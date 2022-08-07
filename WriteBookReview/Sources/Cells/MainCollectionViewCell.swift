@@ -9,24 +9,31 @@ import UIKit
 import SnapKit
 
 class MainCollectionViewCell: UICollectionViewCell {
-    
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = .black
-        return imageView
-    }()
-    
-    private let bookName: UILabel = {
-        let bookName = UILabel()
-        bookName.text = "test"
-        return bookName
-    }()
+    //MARK: - UI Configure
+    private let imageView = UIImageView().then {
+        $0.backgroundColor = .black
+    }
+    private let bookName = UILabel().then{
+        $0.text = "test"
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(imageView)
-        addSubview(bookName)
-        
+        setUpView()
+        setUpConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    //MARK: - setUpView
+    func setUpView() {
+        [imageView, bookName].forEach {
+            addSubview($0)
+        }
+    }
+    //MARK: - setUpConstraints
+    func setUpConstraints() {
         imageView.snp.makeConstraints {
             $0.trailing.leading.top.equalToSuperview()
         }
@@ -35,9 +42,5 @@ class MainCollectionViewCell: UICollectionViewCell {
             $0.height.equalTo(50)
             $0.top.equalTo(imageView.snp.bottom)
         }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

@@ -9,36 +9,36 @@ import UIKit
 import SwiftUI
 import SnapKit
 
-struct SearchBookVCPreView:PreviewProvider {
-    static var previews: some View {
-        Group {
-            SearchBookViewController().toPreview()
-            SearchBookViewController().toPreview().previewDevice("iPhone 8")
-        }
-    }
-}
+//struct SearchBookVCPreView:PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            SearchBookViewController().toPreview()
+//            SearchBookViewController().toPreview().previewDevice("iPhone 8")
+//        }
+//    }
+//}
 
 
 class SearchBookViewController: UIViewController {
-
-    private let bookSearchBar: UISearchBar = {
-        
-        let bookSearhBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: 260, height: 0))
-        bookSearhBar.placeholder = "책 이름을 입력해주세요."
-        bookSearhBar.barTintColor = .systemBackground
-        bookSearhBar.clipsToBounds = true
-        bookSearhBar.searchTextField.backgroundColor = .systemBackground
-        bookSearhBar.searchTextField.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1).cgColor
-        bookSearhBar.searchTextField.layer.cornerRadius = 4
-        bookSearhBar.searchTextField.layer.borderWidth = 2
-        
-        return bookSearhBar
-    }()
+    //MARK: - UI Configure
+    private var bookSearchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: 260, height: 0)).then {
+        $0.placeholder = "책 이름을 입력해주세요."
+        $0.barTintColor = .systemBackground
+        $0.clipsToBounds = true
+        $0.searchTextField.backgroundColor = .systemBackground
+        $0.searchTextField.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1).cgColor
+        $0.searchTextField.layer.cornerRadius = 4
+        $0.searchTextField.layer.borderWidth = 2
+    }
     
-    private var searchResultTableView: UITableView = {
-        let tableView = UITableView()
-        return tableView
-    }()
+    
+    private lazy var searchResultTableView = UITableView().then {
+        $0.delegate = self
+        $0.dataSource = self
+        $0.register(SearchResultTableViewCell.self, forCellReuseIdentifier: "Cell")
+        $0.rowHeight = 200
+    }
+    //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpValue()
@@ -46,7 +46,7 @@ class SearchBookViewController: UIViewController {
         setUpConstraints()
         
     }
-
+    //MARK: - setUpValue
     func setUpValue() {
         //view 배경색 설정
         view.backgroundColor = .systemBackground
@@ -57,20 +57,12 @@ class SearchBookViewController: UIViewController {
         
         self.navigationController?.navigationBar.tintColor = .black
         self.navigationController?.navigationBar.topItem?.title = ""
-        
-        //searchResult TableView
-        searchResultTableView.then {
-            $0.delegate = self
-            $0.dataSource = self
-            $0.register(SearchResultTableViewCell.self, forCellReuseIdentifier: "Cell")
-            $0.rowHeight = 200
-        }
     }
-    
+    //MARK: - setUpView
     func setUpView() {
         view.addSubview(searchResultTableView)
     }
-    
+    //MARK: - setUpConstraints
     func setUpConstraints() {
         
         searchResultTableView.snp.makeConstraints {
@@ -83,6 +75,7 @@ class SearchBookViewController: UIViewController {
     }
 }
 
+//MARK: - extension
 extension SearchBookViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 5
@@ -92,8 +85,6 @@ extension SearchBookViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         return cell
     }
-    
-    
 }
 
 extension SearchBookViewController: UITableViewDelegate {

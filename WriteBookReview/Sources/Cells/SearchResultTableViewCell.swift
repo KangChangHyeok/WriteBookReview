@@ -8,17 +8,34 @@
 import UIKit
 import SnapKit
 class SearchResultTableViewCell: UITableViewCell {
-
-    private var bookImage = UIImageView()
-    private var bookName = UILabel()
+    //MARK: - UI Configure
+    private var bookImage = UIImageView().then {
+        $0.backgroundColor = .black
+    }
+    private var bookName = UILabel().then {
+        $0.text = "책 제목"
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addSubview(bookImage)
-        addSubview(bookName)
-        bookImage.backgroundColor = .black
-        bookName.text = "책 제목"
-        
+        setUpView()
+        setUpConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+    //MARK: - setUpView
+    func setUpView() {
+        [bookImage, bookName].forEach {
+            addSubview($0)
+        }
+    }
+    //MARK: - setUpConstraints
+    func setUpConstraints() {
         bookImage.snp.makeConstraints { make in
             make.leading.top.equalToSuperview().offset(10)
             make.bottom.equalToSuperview().offset(-10)
@@ -29,17 +46,4 @@ class SearchResultTableViewCell: UITableViewCell {
             make.top.equalToSuperview().offset(10)
         }
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-
 }

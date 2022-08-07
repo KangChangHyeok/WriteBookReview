@@ -9,22 +9,35 @@ import UIKit
 import SwiftUI
 import SnapKit
 
-struct AddBookVCPreView:PreviewProvider {
-    static var previews: some View {
-        Group {
-            AddBookViewController().toPreview()
-            AddBookViewController().toPreview().previewDevice("iPhone 8")
-        }
-    }
-}
+//struct AddBookVCPreView:PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            AddBookViewController().toPreview()
+//            AddBookViewController().toPreview().previewDevice("iPhone 8")
+//        }
+//    }
+//}
 class AddBookViewController: UIViewController {
-    
-    private var pagetitle = UILabel()
-    private var bookImage = UIImageView()
-    private var bookName = UILabel()
-    private var review = UITextView()
-    private var AddBookButton = UIButton()
-    
+    //MARK: - UI Configure
+    private var pagetitle = UILabel().then {
+        $0.text = "내가 읽은 책 등록하기"
+        $0.font = UIFont.boldSystemFont(ofSize: 27)
+        $0.backgroundColor = .blue
+    }
+    private var bookImage = UIImageView().then {
+        $0.backgroundColor = .black
+    }
+    private var bookName = UILabel().then {
+        $0.text = "책 제목"
+        $0.backgroundColor = .brown
+    }
+    private var review = UITextView().then {
+        $0.backgroundColor = .blue
+    }
+    private var AddBookButton = UIButton().then {
+        $0.backgroundColor = .gray
+    }
+    //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpValue()
@@ -33,22 +46,11 @@ class AddBookViewController: UIViewController {
     }
     func setUpValue() {
         view.backgroundColor = .systemBackground
-        
-        pagetitle.text = "내가 읽은 책 등록하기"
-        pagetitle.font = UIFont.boldSystemFont(ofSize: 27)
-        pagetitle.backgroundColor = .blue
-        bookImage.backgroundColor = .black
-        bookName.text = "책 제목"
-        bookName.backgroundColor = .brown
-        review.backgroundColor = .blue
-        AddBookButton.backgroundColor = .gray
     }
     func setUpView() {
-        view.addSubview(pagetitle)
-        view.addSubview(bookImage)
-        view.addSubview(bookName)
-        view.addSubview(review)
-        view.addSubview(AddBookButton)
+        [pagetitle, bookImage, bookName, review, AddBookButton].forEach {
+            view.addSubview($0)
+        }
     }
     func setUpConstraints() {
         
