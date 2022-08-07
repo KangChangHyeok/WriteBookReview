@@ -9,19 +9,19 @@ import UIKit
 import SwiftUI
 import SnapKit
 
-//struct SearchBookVCPreView:PreviewProvider {
-//    static var previews: some View {
-//        Group {
-//            SearchBookViewController().toPreview()
-//            SearchBookViewController().toPreview().previewDevice("iPhone 8")
-//        }
-//    }
-//}
+struct SearchBookVCPreView:PreviewProvider {
+    static var previews: some View {
+        Group {
+            SearchBookViewController().toPreview()
+            SearchBookViewController().toPreview().previewDevice("iPhone 8")
+        }
+    }
+}
 
 
 class SearchBookViewController: UIViewController {
     //MARK: - UI Configure
-    private var bookSearchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: 260, height: 0)).then {
+    private lazy var bookSearchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 0)).then {
         $0.placeholder = "책 이름을 입력해주세요."
         $0.barTintColor = .systemBackground
         $0.clipsToBounds = true
@@ -51,13 +51,14 @@ class SearchBookViewController: UIViewController {
         //view 배경색 설정
         view.backgroundColor = .systemBackground
         
-        //navigationBar에 searchBar 추가하기
+        //navigationItem
         let searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchBarButtonTapped))
-        self.navigationItem.rightBarButtonItems = [searchBarButton, UIBarButtonItem(customView: bookSearchBar)]
-        
-        self.navigationController?.navigationBar.tintColor = .black
-        self.navigationController?.navigationBar.topItem?.title = ""
-    }
+        //오른쪽 검색 버튼 추가
+        self.navigationItem.rightBarButtonItem = searchBarButton
+        //가운데 타이틀에 서치바 추가
+        self.navigationItem.titleView = bookSearchBar
+//        self.navigationController?.navigationBar.tintColor = .black
+        }
     //MARK: - setUpView
     func setUpView() {
         view.addSubview(searchResultTableView)

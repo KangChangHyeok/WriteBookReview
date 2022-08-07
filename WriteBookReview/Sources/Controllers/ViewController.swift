@@ -9,15 +9,15 @@ import UIKit
 import Then
 import SnapKit
 import SwiftUI
-//@available(iOS 14.0, *)
-//struct VCPreView:PreviewProvider {
-//    static var previews: some View {
-//        Group {
-//            UINavigationController(rootViewController: MainViewController()).toPreview().ignoresSafeArea()
-//            UINavigationController(rootViewController: MainViewController()).toPreview().previewDevice("iPhone 8")
-//        }
-//    }
-//}
+@available(iOS 14.0, *)
+struct VCPreView:PreviewProvider {
+    static var previews: some View {
+        Group {
+            UINavigationController(rootViewController: MainViewController()).toPreview().ignoresSafeArea()
+            UINavigationController(rootViewController: MainViewController()).toPreview().previewDevice("iPhone 8")
+        }
+    }
+}
 
 class MainViewController: UIViewController {
     //MARK: - UI Configure
@@ -59,10 +59,17 @@ class MainViewController: UIViewController {
     }
     //MARK: - setUpValue
     func setUpValue() {
+        //배경화면 색 설정
         view.backgroundColor = .systemBackground
-        var rightBarButton = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(rigthBarButtonTouched))
-        rightBarButton.tintColor = .black
+        //navigationBar의 모든 항목의 색을 검은색으로
+        self.navigationController?.navigationBar.tintColor = .black
+        //오른쪽에 Menu 버튼 추가
+        let rightBarButton = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(rigthBarButtonTouched))
         navigationItem.rightBarButtonItem = rightBarButton
+        //backBarButtonItem
+        let backBarButton = UIBarButtonItem(title: nil, style: .plain, target: self, action: nil)
+        self.navigationItem.backBarButtonItem = backBarButton
+        
     }
     //MARK: - setUpView
     func setUpView() {
