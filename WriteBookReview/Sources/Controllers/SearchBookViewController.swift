@@ -30,14 +30,14 @@ class SearchBookViewController: UIViewController {
         $0.searchTextField.layer.cornerRadius = 4
         $0.searchTextField.layer.borderWidth = 2
     }
-    
-    
     private lazy var searchResultTableView = UITableView().then {
         $0.delegate = self
         $0.dataSource = self
         $0.register(SearchResultTableViewCell.self, forCellReuseIdentifier: "Cell")
         $0.rowHeight = 200
     }
+    private lazy var searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchBarButtonTapped))
+    private lazy var dataManager = DataManager()
     //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,14 +50,11 @@ class SearchBookViewController: UIViewController {
     func setUpValue() {
         //view 배경색 설정
         view.backgroundColor = .systemBackground
-        
         //navigationItem
-        let searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchBarButtonTapped))
         //오른쪽 검색 버튼 추가
         self.navigationItem.rightBarButtonItem = searchBarButton
         //가운데 타이틀에 서치바 추가
         self.navigationItem.titleView = bookSearchBar
-//        self.navigationController?.navigationBar.tintColor = .black
         }
     //MARK: - setUpView
     func setUpView() {
@@ -72,7 +69,10 @@ class SearchBookViewController: UIViewController {
         }
     }
     @objc func searchBarButtonTapped() {
-        print("search")
+        guard let bookName = self.bookSearchBar.text else {return}
+        dataManager.getUserSearchBookInformation(bookName: bookName) { SearchResult in
+            print(SearchResult)
+        }
     }
 }
 
