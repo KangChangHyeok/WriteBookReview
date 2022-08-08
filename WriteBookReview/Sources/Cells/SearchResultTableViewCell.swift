@@ -9,11 +9,11 @@ import UIKit
 import SnapKit
 class SearchResultTableViewCell: UITableViewCell {
     //MARK: - UI Configure
-    private var bookImage = UIImageView().then {
+    var bookImage = UIImageView().then {
         $0.backgroundColor = .black
     }
-    private var bookName = UILabel().then {
-        $0.text = "책 제목"
+    var bookName = UILabel().then {
+        $0.numberOfLines = 0
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -43,6 +43,7 @@ class SearchResultTableViewCell: UITableViewCell {
         }
         bookName.snp.makeConstraints { make in
             make.leading.equalTo(bookImage.snp.trailing).offset(10)
+            make.trailing.equalToSuperview().offset(-10)
             make.top.equalToSuperview().offset(10)
         }
     }

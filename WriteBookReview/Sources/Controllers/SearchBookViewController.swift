@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 import SnapKit
-
+import Kingfisher
 struct SearchBookVCPreView:PreviewProvider {
     static var previews: some View {
         Group {
@@ -38,6 +38,9 @@ class SearchBookViewController: UIViewController {
     }
     private lazy var searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchBarButtonTapped))
     private lazy var dataManager = DataManager()
+    private var bookImage = [String]()
+    private var bookName = [String]()
+    private var bookCount = 0
     //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +74,17 @@ class SearchBookViewController: UIViewController {
     @objc func searchBarButtonTapped() {
         guard let bookName = self.bookSearchBar.text else {return}
         dataManager.getUserSearchBookInformation(bookName: bookName) { SearchResult in
-            print(SearchResult)
+            
+            self.bookCount = 0
+            self.bookName.removeAll()
+            self.bookImage.removeAll()
+            
+            self.bookCount = SearchResult.items.count
+            for i in 0..<self.bookCount {
+                self.bookName.append(SearchResult.items[i].title)
+                self.bookImage.append(SearchResult.items[i].image)
+            }
+            self.searchResultTableView.reloadData()
         }
     }
 }
@@ -79,11 +92,13 @@ class SearchBookViewController: UIViewController {
 //MARK: - extension
 extension SearchBookViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return bookCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! SearchResultTableViewCell
+        cell.bookName.text = self.bookName[indexPath.row]
+        cell.bookImage.kf.setImage(with: URL(string: self.bookImage[indexPath.row]))
         return cell
     }
 }

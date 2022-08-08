@@ -10,11 +10,11 @@ import SnapKit
 
 class MainCollectionViewCell: UICollectionViewCell {
     //MARK: - UI Configure
-    private let imageView = UIImageView().then {
+    var imageView = UIImageView().then {
         $0.backgroundColor = .black
     }
-    private let bookName = UILabel().then{
-        $0.text = "test"
+    var bookName = UILabel().then{
+        $0.numberOfLines = 0
     }
     
     override init(frame: CGRect) {
