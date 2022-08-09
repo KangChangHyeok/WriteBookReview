@@ -17,6 +17,8 @@
 		273DCDA2289A72E50031CD2D /* SearchBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273DCDA1289A72E50031CD2D /* SearchBookViewController.swift */; };
 		273DCDA4289A9D630031CD2D /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273DCDA3289A9D630031CD2D /* SearchResultTableViewCell.swift */; };
 		273DCDA6289AA7F50031CD2D /* AddBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273DCDA5289AA7F50031CD2D /* AddBookViewController.swift */; };
+		27AB749928A262F700D7D48A /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AB749828A262F700D7D48A /* UIColor.swift */; };
+		27AB749B28A2880D00D7D48A /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AB749A28A2880D00D7D48A /* Notification.swift */; };
 		27C185C828A00CD3005DE4B8 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C185C728A00CD3005DE4B8 /* DataManager.swift */; };
 		27C185CA28A01009005DE4B8 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C185C928A01008005DE4B8 /* SearchResult.swift */; };
 		4806F5C74A2398E4D572BC4B /* Pods_WriteBookReview.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C0E8032DACD3AA76531340 /* Pods_WriteBookReview.framework */; };
@@ -35,6 +37,8 @@
 		273DCDA1289A72E50031CD2D /* SearchBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBookViewController.swift; sourceTree = "<group>"; };
 		273DCDA3289A9D630031CD2D /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		273DCDA5289AA7F50031CD2D /* AddBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookViewController.swift; sourceTree = "<group>"; };
+		27AB749828A262F700D7D48A /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		27AB749A28A2880D00D7D48A /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		27C185C728A00CD3005DE4B8 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		27C185C928A01008005DE4B8 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		31251BE3796D51FC87F1D120 /* Pods-WriteBookReview.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WriteBookReview.release.xcconfig"; path = "Target Support Files/Pods-WriteBookReview/Pods-WriteBookReview.release.xcconfig"; sourceTree = "<group>"; };
@@ -124,6 +128,8 @@
 			isa = PBXGroup;
 			children = (
 				273DCD912897CD940031CD2D /* UIViewController.swift */,
+				27AB749828A262F700D7D48A /* UIColor.swift */,
+				27AB749A28A2880D00D7D48A /* Notification.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -295,7 +301,9 @@
 				273DCD7E2897C97D0031CD2D /* AppDelegate.swift in Sources */,
 				273DCD98289A506D0031CD2D /* MainCollectionViewCell.swift in Sources */,
 				273DCD922897CD940031CD2D /* UIViewController.swift in Sources */,
+				27AB749B28A2880D00D7D48A /* Notification.swift in Sources */,
 				27C185C828A00CD3005DE4B8 /* DataManager.swift in Sources */,
+				27AB749928A262F700D7D48A /* UIColor.swift in Sources */,
 				273DCD802897C97D0031CD2D /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
