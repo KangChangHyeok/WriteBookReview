@@ -40,6 +40,8 @@ class SearchBookViewController: UIViewController {
     private lazy var dataManager = DataManager()
     private var bookImage = [String]()
     private var bookName = [String]()
+    private var author = [String]()
+    private var bookDescription = [String]()
     private var bookCount = 0
     //MARK: - Life cycle
     override func viewDidLoad() {
@@ -78,11 +80,14 @@ class SearchBookViewController: UIViewController {
             self.bookCount = 0
             self.bookName.removeAll()
             self.bookImage.removeAll()
+            self.author.removeAll()
             
             self.bookCount = SearchResult.items.count
             for i in 0..<self.bookCount {
                 self.bookName.append(SearchResult.items[i].title)
                 self.bookImage.append(SearchResult.items[i].image)
+                self.author.append(SearchResult.items[i].author)
+                self.bookDescription.append(SearchResult.items[i].itemDescription)
             }
             self.searchResultTableView.reloadData()
         }
@@ -99,6 +104,7 @@ extension SearchBookViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! SearchResultTableViewCell
         cell.bookName.text = self.bookName[indexPath.row]
         cell.bookImage.kf.setImage(with: URL(string: self.bookImage[indexPath.row]))
+        cell.author.text = self.author[indexPath.row]
         return cell
     }
 }
@@ -106,6 +112,12 @@ extension SearchBookViewController: UITableViewDataSource {
 extension SearchBookViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        present(AddBookViewController(), animated: true)
+        let addBookViewController = AddBookViewController().then {
+            $0.bookName.text = self.bookName[indexPath.row]
+            $0.bookImage.kf.setImage(with: URL(string: self.bookImage[indexPath.row]))
+            $0.author.text = self.author[indexPath.row]
+            $0.bookDescription.text = self.bookDescription[indexPath.row]
+        }
+        present(addBookViewController, animated: true)
     }
 }

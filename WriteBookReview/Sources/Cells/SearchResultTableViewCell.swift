@@ -15,9 +15,12 @@ class SearchResultTableViewCell: UITableViewCell {
     var bookName = UILabel().then {
         $0.numberOfLines = 0
     }
-    
+    var author = UILabel().then {
+        $0.numberOfLines = 0
+    }
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
         setUpView()
         setUpConstraints()
     }
@@ -30,7 +33,7 @@ class SearchResultTableViewCell: UITableViewCell {
     }
     //MARK: - setUpView
     func setUpView() {
-        [bookImage, bookName].forEach {
+        [bookImage, bookName, author].forEach {
             addSubview($0)
         }
     }
@@ -45,6 +48,11 @@ class SearchResultTableViewCell: UITableViewCell {
             make.leading.equalTo(bookImage.snp.trailing).offset(10)
             make.trailing.equalToSuperview().offset(-10)
             make.top.equalToSuperview().offset(10)
+        }
+        author.snp.makeConstraints { make in
+            make.leading.equalTo(bookImage.snp.trailing).offset(10)
+            make.trailing.equalToSuperview().offset(-10)
+            make.top.equalTo(bookName.snp.bottom).offset(10)
         }
     }
 }
