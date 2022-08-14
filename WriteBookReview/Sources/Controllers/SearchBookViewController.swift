@@ -29,6 +29,7 @@ class SearchBookViewController: UIViewController {
         $0.searchTextField.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1).cgColor
         $0.searchTextField.layer.cornerRadius = 4
         $0.searchTextField.layer.borderWidth = 2
+        $0.delegate = self
     }
     private lazy var searchResultTableView = UITableView().then {
         $0.delegate = self
@@ -37,6 +38,7 @@ class SearchBookViewController: UIViewController {
         $0.rowHeight = 200
     }
     private lazy var searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchBarButtonTapped))
+    
     private lazy var dataManager = DataManager()
     private var bookImage = [String]()
     private var bookName = [String]()
@@ -60,6 +62,10 @@ class SearchBookViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = searchBarButton
         //가운데 타이틀에 서치바 추가
         self.navigationItem.titleView = bookSearchBar
+        //notificationCenter
+        NotificationCenter.default.addObserver(self, selector: #selector(searchInProgress), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(endSearch), name: UIResponder.keyboardWillHideNotification, object: nil)
+
         }
     //MARK: - setUpView
     func setUpView() {
@@ -73,6 +79,7 @@ class SearchBookViewController: UIViewController {
             $0.bottom.equalToSuperview()
         }
     }
+    //MARK: - @objc Method
     @objc func searchBarButtonTapped() {
         guard let bookName = self.bookSearchBar.text else {return}
         dataManager.getUserSearchBookInformation(bookName: bookName) { SearchResult in
@@ -90,7 +97,18 @@ class SearchBookViewController: UIViewController {
                 self.bookDescription.append(SearchResult.items[i].itemDescription)
             }
             self.searchResultTableView.reloadData()
+            self.bookSearchBar.resignFirstResponder()
         }
+    }
+    @objc func searchInProgress(noti: Notification) {
+        guard let userInfo = noti.userInfo else {return}
+        guard let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {return}
+        self.view.frame.size.height -= keyboardFrame.height
+    }
+    @objc func endSearch(noti: Notification) {
+        guard let userInfo = noti.userInfo else {return}
+        guard let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {return}
+        self.view.frame.size.height += keyboardFrame.height
     }
 }
 
@@ -120,4 +138,33 @@ extension SearchBookViewController: UITableViewDelegate {
         }
         present(addBookViewController, animated: true)
     }
+}
+
+extension SearchBookViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let bookName = self.bookSearchBar.text else {return}
+        dataManager.getUserSearchBookInformation(bookName: bookName) { SearchResult in
+            
+            self.bookCount = 0
+            self.bookName.removeAll()
+            self.bookImage.removeAll()
+            self.author.removeAll()
+            
+            self.bookCount = SearchResult.items.count
+            for i in 0..<self.bookCount {
+                self.bookName.append(SearchResult.items[i].title)
+                self.bookImage.append(SearchResult.items[i].image)
+                self.author.append(SearchResult.items[i].author)
+                self.bookDescription.append(SearchResult.items[i].itemDescription)
+            }
+            self.searchResultTableView.reloadData()
+            
+        }
+        searchBar.resignFirstResponder()
+    }
+        
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        return true
+    }
+    
 }

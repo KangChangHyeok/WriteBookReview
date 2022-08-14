@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+extension Notification.Name {
+    static let searchCompleted = Notification.Name("searchCompleted")
+
+}

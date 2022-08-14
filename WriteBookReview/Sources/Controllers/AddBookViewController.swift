@@ -9,6 +9,7 @@ import UIKit
 import SwiftUI
 import SnapKit
 
+
 struct AddBookVCPreView:PreviewProvider {
     static var previews: some View {
         Group {
@@ -25,6 +26,7 @@ class AddBookViewController: UIViewController {
         $0.showsHorizontalScrollIndicator = false
         $0.delegate = self
     }
+    
     private lazy var contentsView = UIView()
     private var pagetitle = UILabel().then {
         $0.text = "내가 읽은 책 등록하기"
@@ -58,6 +60,7 @@ class AddBookViewController: UIViewController {
         $0.setTitle("책 등록하기", for: .normal)
         $0.tintColor = .white
         $0.backgroundColor = .black
+        $0.addTarget(self, action: #selector(addBookButtonTapped), for: .touchUpInside)
     }
     //MARK: - Life cycle
     override func viewDidLoad() {
@@ -144,13 +147,17 @@ class AddBookViewController: UIViewController {
     @objc func beginInputReview(noti: Notification) {
         guard let userInfo = noti.userInfo else {return}
         guard let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {return}
-        scrollView.frame.origin.y -= keyboardFrame.height
+        scrollView.bounds.origin.y += keyboardFrame.height
         
     }
     @objc func endInputReview(noti: Notification) {
         guard let userInfo = noti.userInfo else {return}
         guard let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {return}
-        scrollView.frame.origin.y += keyboardFrame.height
+        scrollView.bounds.origin.y -= keyboardFrame.height
+    }
+    @objc func addBookButtonTapped() {
+        self.review.resignFirstResponder()
+        self.dismiss(animated: true)
     }
 }
 //리뷰 작성 글자갯수 500개로 제한
