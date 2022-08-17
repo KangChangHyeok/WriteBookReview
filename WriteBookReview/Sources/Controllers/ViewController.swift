@@ -9,15 +9,17 @@ import UIKit
 import Then
 import SnapKit
 import SwiftUI
-@available(iOS 14.0, *)
-struct VCPreView:PreviewProvider {
-    static var previews: some View {
-        Group {
-            UINavigationController(rootViewController: MainViewController()).toPreview().ignoresSafeArea()
-            UINavigationController(rootViewController: MainViewController()).toPreview().previewDevice("iPhone 8")
-        }
-    }
-}
+import Kingfisher
+import CoreData
+//@available(iOS 14.0, *)
+//struct VCPreView:PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            UINavigationController(rootViewController: MainViewController()).toPreview().ignoresSafeArea()
+//            UINavigationController(rootViewController: MainViewController()).toPreview().previewDevice("iPhone 8")
+//        }
+//    }
+//}
 
 class MainViewController: UIViewController {
     //MARK: - UI Configure
@@ -49,13 +51,60 @@ class MainViewController: UIViewController {
         $0.addTarget(self, action: #selector(searchBookButtonTapped), for: .touchUpInside)
     }
     
+    private lazy var bookCount: Int = {
+        var bookCount = 0
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        do {
+            let contact = try context.fetch(Book.fetchRequest()) as! [Book]
+            bookCount = contact.count
+        } catch {
+            print(error.localizedDescription)
+        }
+        return bookCount
+    }()
     
+    private lazy var bookImages: [String?] = {
+        var bookImages = [String?]()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        do {
+            let contact = try context.fetch(Book.fetchRequest()) as! [Book]
+            contact.forEach {
+                bookImages.append($0.bookImage)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+        return bookImages
+    }()
+    
+    private lazy var bookNames: [String?] = {
+        var bookNames = [String?]()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        do {
+            let contact = try context.fetch(Book.fetchRequest()) as! [Book]
+            contact.forEach {
+                bookNames.append($0.bookName)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+        return bookNames
+    }()
     //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpValue()
         setUpView()
         setUpConstraints()
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        refreshCoredata()
+        mainColletionView.reloadData()
+        print(bookCount,bookNames,bookImages)
     }
     //MARK: - setUpValue
     func setUpValue() {
@@ -69,7 +118,6 @@ class MainViewController: UIViewController {
         //backBarButtonItem
         let backBarButton = UIBarButtonItem(title: nil, style: .plain, target: self, action: nil)
         self.navigationItem.backBarButtonItem = backBarButton
-        
     }
     //MARK: - setUpView
     func setUpView() {
@@ -102,18 +150,36 @@ class MainViewController: UIViewController {
         navigationController?.pushViewController(SearchBookViewController(), animated: true)
     }
     
+    func refreshCoredata() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        context.refreshAllObjects()
+    }
 }
 //MARK: - extension
 extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
+        
+        return bookCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! MainCollectionViewCell
         cell.backgroundColor = .white
+        if bookCount == 0 {
+            print("등록된 책 없음")
+        } else {
+            if bookImages[indexPath.row] == nil {
+                cell.imageView.backgroundColor = .black
+                cell.imageView.image = nil
+            } else {
+            cell.imageView.kf.setImage(with: URL(string: bookImages[indexPath.row] ?? ""))
+            }
+            cell.bookName.text = self.bookNames[indexPath.row]
+        }
         return cell
     }
+    
 }
 
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {

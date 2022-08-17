@@ -133,6 +133,7 @@ extension SearchBookViewController: UITableViewDelegate {
         let addBookViewController = AddBookViewController().then {
             $0.bookName.text = self.bookName[indexPath.row]
             $0.bookImage.kf.setImage(with: URL(string: self.bookImage[indexPath.row]))
+            $0.bookImageStrValue = self.bookImage[indexPath.row]
             $0.author.text = self.author[indexPath.row]
             $0.bookDescription.text = self.bookDescription[indexPath.row]
         }

@@ -12,6 +12,7 @@ class SearchResultTableViewCell: UITableViewCell {
     var bookImage = UIImageView().then {
         $0.backgroundColor = .black
     }
+    var bookImageStr = ""
     var bookName = UILabel().then {
         $0.numberOfLines = 0
     }

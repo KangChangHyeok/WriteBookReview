@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 import SnapKit
-
+import CoreData
 
 struct AddBookVCPreView:PreviewProvider {
     static var previews: some View {
@@ -34,6 +34,7 @@ class AddBookViewController: UIViewController {
         
     }
     var bookImage = UIImageView()
+    var bookImageStrValue = ""
     var bookName = UILabel().then {
         $0.numberOfLines = 0
         
@@ -157,6 +158,21 @@ class AddBookViewController: UIViewController {
     }
     @objc func addBookButtonTapped() {
         self.review.resignFirstResponder()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let entity = NSEntityDescription.entity(forEntityName: "Book", in: context)
+        
+        if let entity = entity {
+            let book = NSManagedObject(entity: entity, insertInto: context)
+            book.setValue(bookName.text?.description, forKey: "bookName")
+            book.setValue(bookImageStrValue, forKey: "bookImage")
+            do {
+                try context.save()
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
         self.dismiss(animated: true)
     }
 }

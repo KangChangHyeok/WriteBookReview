@@ -7,7 +7,7 @@
 
 import UIKit
 import SnapKit
-
+import CoreData
 class MainCollectionViewCell: UICollectionViewCell {
     //MARK: - UI Configure
     var imageView = UIImageView().then {
