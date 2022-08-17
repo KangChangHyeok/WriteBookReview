@@ -163,9 +163,5 @@ extension SearchBookViewController: UISearchBarDelegate {
         }
         searchBar.resignFirstResponder()
     }
-        
-    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-        return true
-    }
     
 }

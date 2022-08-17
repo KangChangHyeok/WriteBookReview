@@ -74,6 +74,10 @@ class AddBookViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print(#function)
+    }
     func setUpValue() {
         view.backgroundColor = .systemBackground
         //notification addobserver
@@ -148,13 +152,13 @@ class AddBookViewController: UIViewController {
     @objc func beginInputReview(noti: Notification) {
         guard let userInfo = noti.userInfo else {return}
         guard let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {return}
-        scrollView.bounds.origin.y += keyboardFrame.height
+        self.view.frame.size.height -= keyboardFrame.height
         
     }
     @objc func endInputReview(noti: Notification) {
         guard let userInfo = noti.userInfo else {return}
         guard let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {return}
-        scrollView.bounds.origin.y -= keyboardFrame.height
+        self.view.frame.size.height += keyboardFrame.height
     }
     @objc func addBookButtonTapped() {
         self.review.resignFirstResponder()
@@ -167,13 +171,13 @@ class AddBookViewController: UIViewController {
             let book = NSManagedObject(entity: entity, insertInto: context)
             book.setValue(bookName.text?.description, forKey: "bookName")
             book.setValue(bookImageStrValue, forKey: "bookImage")
-            do {
-                try context.save()
-            } catch {
-                print(error.localizedDescription)
-            }
         }
-        self.dismiss(animated: true)
+        do {
+            try context.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+        self.view.window?.rootViewController?.dismiss(animated: true)
     }
 }
 //리뷰 작성 글자갯수 500개로 제한
@@ -193,9 +197,4 @@ extension AddBookViewController: UITextViewDelegate {
     }
 }
 
-extension AddBookViewController: UIScrollViewDelegate {
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        self.review.resignFirstResponder()
-    }
-}
+

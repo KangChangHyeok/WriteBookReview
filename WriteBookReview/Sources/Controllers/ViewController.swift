@@ -51,48 +51,9 @@ class MainViewController: UIViewController {
         $0.addTarget(self, action: #selector(searchBookButtonTapped), for: .touchUpInside)
     }
     
-    private lazy var bookCount: Int = {
-        var bookCount = 0
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        do {
-            let contact = try context.fetch(Book.fetchRequest()) as! [Book]
-            bookCount = contact.count
-        } catch {
-            print(error.localizedDescription)
-        }
-        return bookCount
-    }()
-    
-    private lazy var bookImages: [String?] = {
-        var bookImages = [String?]()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        do {
-            let contact = try context.fetch(Book.fetchRequest()) as! [Book]
-            contact.forEach {
-                bookImages.append($0.bookImage)
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-        return bookImages
-    }()
-    
-    private lazy var bookNames: [String?] = {
-        var bookNames = [String?]()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        do {
-            let contact = try context.fetch(Book.fetchRequest()) as! [Book]
-            contact.forEach {
-                bookNames.append($0.bookName)
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-        return bookNames
-    }()
+    private var bookCount: Int?
+    private var bookImages = [String?]()
+    private var bookNames = [String?]()
     //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,9 +63,49 @@ class MainViewController: UIViewController {
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        refreshCoredata()
+        bookNames = {
+            var bookNames = [String?]()
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let context = appDelegate.persistentContainer.viewContext
+            do {
+                let contact = try context.fetch(Book.fetchRequest()) as! [Book]
+                contact.forEach {
+                    bookNames.append($0.bookName)
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+            return bookNames
+        }()
+        bookImages = {
+            var bookImages = [String?]()
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let context = appDelegate.persistentContainer.viewContext
+            do {
+                let contact = try context.fetch(Book.fetchRequest()) as! [Book]
+                contact.forEach {
+                    bookImages.append($0.bookImage)
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+            return bookImages
+        }()
+        
+        bookCount = {
+            var bookCount = 0
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let context = appDelegate.persistentContainer.viewContext
+            do {
+                let contact = try context.fetch(Book.fetchRequest()) as! [Book]
+                bookCount = contact.count
+            } catch {
+                print(error.localizedDescription)
+            }
+            return bookCount
+        }()
         mainColletionView.reloadData()
-        print(bookCount,bookNames,bookImages)
+        
     }
     //MARK: - setUpValue
     func setUpValue() {
@@ -149,18 +150,12 @@ class MainViewController: UIViewController {
     @objc func searchBookButtonTapped() {
         navigationController?.pushViewController(SearchBookViewController(), animated: true)
     }
-    
-    func refreshCoredata() {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        context.refreshAllObjects()
-    }
 }
 //MARK: - extension
 extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return bookCount
+        return bookCount!
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
