@@ -161,23 +161,47 @@ class AddBookViewController: UIViewController {
         self.view.frame.size.height += keyboardFrame.height
     }
     @objc func addBookButtonTapped() {
+        
         self.review.resignFirstResponder()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
-        
-        let entity = NSEntityDescription.entity(forEntityName: "Book", in: context)
-        
-        if let entity = entity {
-            let book = NSManagedObject(entity: entity, insertInto: context)
-            book.setValue(bookName.text?.description, forKey: "bookName")
-            book.setValue(bookImageStrValue, forKey: "bookImage")
-        }
         do {
-            try context.save()
+            let contact = try context.fetch(Book.fetchRequest()) as! [Book]
+            let overlap = contact.filter { book in
+                book.bookName?.description == self.bookName.text?.description
+            }
+            if overlap.count == 0 {
+                let entity = NSEntityDescription.entity(forEntityName: "Book", in: context)
+                if let entity = entity {
+                    let book = NSManagedObject(entity: entity, insertInto: context)
+                    book.setValue(bookName.text?.description, forKey: "bookName")
+                    book.setValue(bookImageStrValue, forKey: "bookImage")
+                    book.setValue(review.text, forKey: "bookReview")
+                }
+                do {
+                    try context.save()
+                } catch {
+                    print(error.localizedDescription)
+                }
+                guard let presentingViewController = self.presentingViewController as? UINavigationController else {return}
+                dismiss(animated: true) {
+                    print(presentingViewController)
+                    presentingViewController.popToRootViewController(animated: true)
+                }
+            } else {
+                print("이미 등록한 책입니다.")
+                let sheet = UIAlertController(title: "알림", message: "이미 등록한 책입니다.", preferredStyle: .alert)
+                sheet.addAction(UIAlertAction(title: "확인", style: .default, handler: { _ in
+                    self.dismiss(animated: true)
+                
+                }))
+                present(sheet, animated: true)
+            }
         } catch {
             print(error.localizedDescription)
         }
-        self.view.window?.rootViewController?.dismiss(animated: true)
+        
+        
     }
 }
 //리뷰 작성 글자갯수 500개로 제한

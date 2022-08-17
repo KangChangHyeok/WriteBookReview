@@ -11,7 +11,7 @@ import CoreData
 class MainCollectionViewCell: UICollectionViewCell {
     //MARK: - UI Configure
     var imageView = UIImageView().then {
-        $0.backgroundColor = .black
+        $0.backgroundColor = .systemBackground
     }
     var bookName = UILabel().then{
         $0.numberOfLines = 0

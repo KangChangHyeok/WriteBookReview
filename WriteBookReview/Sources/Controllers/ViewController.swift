@@ -39,7 +39,7 @@ class MainViewController: UIViewController {
     private lazy var mainColletionView = UICollectionView(frame: .zero, collectionViewLayout: mainCollectionViewFlowLayout).then {
         $0.delegate = self
         $0.dataSource = self
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .systemGray6
         $0.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
     }
     
@@ -54,6 +54,8 @@ class MainViewController: UIViewController {
     private var bookCount: Int?
     private var bookImages = [String?]()
     private var bookNames = [String?]()
+    private var bookReviews = [String?]()
+    
     //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +65,9 @@ class MainViewController: UIViewController {
         
     }
     override func viewWillAppear(_ animated: Bool) {
+        
+        
+        
         bookNames = {
             var bookNames = [String?]()
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -104,6 +109,30 @@ class MainViewController: UIViewController {
             }
             return bookCount
         }()
+        
+        bookReviews = {
+            var bookReviews = [String?]()
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let context = appDelegate.persistentContainer.viewContext
+            do {
+                let contact = try context.fetch(Book.fetchRequest()) as! [Book]
+                contact.forEach { Book in
+                    bookReviews.append(Book.bookReview)
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+            return bookReviews
+        }()
+        
+        if bookCount == 0 {
+            let leftBarButton = UIBarButtonItem(title: "책을 읽고 등록해 보세요!", style: .plain, target: self, action: nil)
+            navigationItem.leftBarButtonItem = leftBarButton
+        } else {
+            let leftBarButton = UIBarButtonItem(title: "나의 책", style: .plain, target: self, action: nil)
+            navigationItem.leftBarButtonItem = leftBarButton
+        }
+        
         mainColletionView.reloadData()
         
     }
@@ -114,8 +143,10 @@ class MainViewController: UIViewController {
         //navigationBar의 모든 항목의 색을 검은색으로
         self.navigationController?.navigationBar.tintColor = .black
         //오른쪽에 Menu 버튼 추가
-        let rightBarButton = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(rigthBarButtonTouched))
-        navigationItem.rightBarButtonItem = rightBarButton
+//        let rightBarButton = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(rigthBarButtonTouched))
+//        navigationItem.rightBarButtonItem = rightBarButton
+        
+        
         //backBarButtonItem
         let backBarButton = UIBarButtonItem(title: nil, style: .plain, target: self, action: nil)
         self.navigationItem.backBarButtonItem = backBarButton
@@ -162,7 +193,7 @@ extension MainViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! MainCollectionViewCell
         cell.backgroundColor = .white
         if bookCount == 0 {
-            print("등록된 책 없음")
+            
         } else {
             if bookImages[indexPath.row] == nil {
                 cell.imageView.backgroundColor = .black
@@ -171,6 +202,7 @@ extension MainViewController: UICollectionViewDataSource {
             cell.imageView.kf.setImage(with: URL(string: bookImages[indexPath.row] ?? ""))
             }
             cell.bookName.text = self.bookNames[indexPath.row]
+            cell.layer.cornerRadius = 10
         }
         return cell
     }
@@ -185,6 +217,20 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegate
         let cellWidth = (collectionViewWidth / 2) - 15
         let cellHeight = (collectionViewHeight / 2) - 15
         return CGSize(width: cellWidth, height: cellHeight)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let bookInformationViewController = BookInformationViewController().then {
+            $0.bookName.text = bookNames[indexPath.row]
+            $0.bookImage.kf.setImage(with: URL(string: bookImages[indexPath.row]!))
+            if bookReviews[indexPath.row] != nil {
+                $0.review.text = bookReviews[indexPath.row]
+            } else {
+                $0.review.text = "리뷰를 작성하지 않았습니다!"
+            }
+            
+        }
+        navigationController?.pushViewController(bookInformationViewController, animated: true)
     }
 }
 

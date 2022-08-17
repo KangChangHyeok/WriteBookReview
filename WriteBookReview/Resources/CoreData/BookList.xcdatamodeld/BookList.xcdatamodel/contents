@@ -3,8 +3,9 @@
     <entity name="Book" representedClassName="Book" syncable="YES" codeGenerationType="class">
         <attribute name="bookImage" optional="YES" attributeType="String"/>
         <attribute name="bookName" optional="YES" attributeType="String"/>
+        <attribute name="bookReview" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="Book" positionX="-63" positionY="-18" width="128" height="73"/>
+        <element name="Book" positionX="-63" positionY="-18" width="128" height="74"/>
     </elements>
 </model>

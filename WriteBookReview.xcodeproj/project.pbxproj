@@ -17,6 +17,7 @@
 		273DCDA2289A72E50031CD2D /* SearchBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273DCDA1289A72E50031CD2D /* SearchBookViewController.swift */; };
 		273DCDA4289A9D630031CD2D /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273DCDA3289A9D630031CD2D /* SearchResultTableViewCell.swift */; };
 		273DCDA6289AA7F50031CD2D /* AddBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273DCDA5289AA7F50031CD2D /* AddBookViewController.swift */; };
+		273EFCEE28ACCAEB0038DB15 /* BookInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273EFCED28ACCAEB0038DB15 /* BookInformationViewController.swift */; };
 		2747644E28AB562500E2D963 /* BookList.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2747644C28AB562500E2D963 /* BookList.xcdatamodeld */; };
 		27AB749928A262F700D7D48A /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AB749828A262F700D7D48A /* UIColor.swift */; };
 		27AB749B28A2880D00D7D48A /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AB749A28A2880D00D7D48A /* Notification.swift */; };
@@ -38,6 +39,7 @@
 		273DCDA1289A72E50031CD2D /* SearchBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBookViewController.swift; sourceTree = "<group>"; };
 		273DCDA3289A9D630031CD2D /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		273DCDA5289AA7F50031CD2D /* AddBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookViewController.swift; sourceTree = "<group>"; };
+		273EFCED28ACCAEB0038DB15 /* BookInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInformationViewController.swift; sourceTree = "<group>"; };
 		2747644D28AB562500E2D963 /* BookList.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BookList.xcdatamodel; sourceTree = "<group>"; };
 		27AB749828A262F700D7D48A /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		27AB749A28A2880D00D7D48A /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				273DCD812897C97D0031CD2D /* ViewController.swift */,
 				273DCDA1289A72E50031CD2D /* SearchBookViewController.swift */,
 				273DCDA5289AA7F50031CD2D /* AddBookViewController.swift */,
+				273EFCED28ACCAEB0038DB15 /* BookInformationViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				2747644E28AB562500E2D963 /* BookList.xcdatamodeld in Sources */,
 				273DCD7E2897C97D0031CD2D /* AppDelegate.swift in Sources */,
 				273DCD98289A506D0031CD2D /* MainCollectionViewCell.swift in Sources */,
+				273EFCEE28ACCAEB0038DB15 /* BookInformationViewController.swift in Sources */,
 				273DCD922897CD940031CD2D /* UIViewController.swift in Sources */,
 				27AB749B28A2880D00D7D48A /* Notification.swift in Sources */,
 				27C185C828A00CD3005DE4B8 /* DataManager.swift in Sources */,
