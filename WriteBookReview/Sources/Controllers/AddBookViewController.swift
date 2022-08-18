@@ -10,14 +10,14 @@ import SwiftUI
 import SnapKit
 import CoreData
 
-struct AddBookVCPreView:PreviewProvider {
-    static var previews: some View {
-        Group {
-            AddBookViewController().toPreview()
-            AddBookViewController().toPreview().previewDevice("iPhone 8")
-        }
-    }
-}
+//struct AddBookVCPreView:PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            AddBookViewController().toPreview()
+//            AddBookViewController().toPreview().previewDevice("iPhone 8")
+//        }
+//    }
+//}
 class AddBookViewController: UIViewController {
     //MARK: - UI Configure
     
