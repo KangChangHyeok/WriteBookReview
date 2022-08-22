@@ -26,7 +26,7 @@
 등록할 책을 찾기위해 검색을 할 수 있습니다.  
 네이버 검색 API중 책을 검색할수 있는 API를 활용하여 검색기능을 구현했습니다. 표시되는 책의 갯수는 최대 10개입니다.  
 <details>
-<summary>코드 /summary>
+<summary>코드 보기</summary>
 <div markdown="1">
 
 #### 네이버 책 검색 API에 get으로 호출하여 데이터를 불러오는 함수입니다.
@@ -59,6 +59,29 @@ func getUserSearchBookInformation(bookName: String, completion: @escaping (Searc
     }
 ```
 
+#### 키보드가 올라오게 되면 키보드의 높이만큼 컨텐츠를 가리게 됩니다. NotificationCenter의 keyboardWillShowNotification, keyboardWillHideNotification을 이용하여 키보드가 올라오고 내려올때마다 view의 크기를 조절하였습니다. 
+NotifiCationCenter AddObserver. 
+        
+```swift
+NotificationCenter.default.addObserver(self, selector: #selector(searchInProgress), name: UIResponder.keyboardWillShowNotification, object: nil)
+NotificationCenter.default.addObserver(self, selector: #selector(endSearch), name: UIResponder.keyboardWillHideNotification, object: nil)  
+```
+
+키보드가 올라가고 내려갈때마다 view의 크기 조절
+        
+```swift
+@objc func searchInProgress(noti: Notification) {
+        guard let userInfo = noti.userInfo else {return}
+        guard let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {return}
+        self.view.frame.size.height -= keyboardFrame.height
+    }
+    @objc func endSearch(noti: Notification) {
+        guard let userInfo = noti.userInfo else {return}
+        guard let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {return}
+        self.view.frame.size.height += keyboardFrame.height
+    }
+```
+        
 </div>
 </details>
 
@@ -66,7 +89,60 @@ func getUserSearchBookInformation(bookName: String, completion: @escaping (Searc
 ![책_등록_기능_AdobeExpress](https://user-images.githubusercontent.com/89637673/185832278-8ca7be0d-cd87-4e52-b8d4-a8ab2f7afeed.gif)  
 이 앱의 핵심 기능입니다. 해당 셀을 누를 경우 책을 등록할수 있는 페이지로 이동합니다. 책의 간단한 정보를 보여주고 리뷰를 남길수 있습니다.  
 리뷰는 선택사항이며, 버튼을 누르게 되면 첫 화면으로 이동하면서 등록된 책이 화면에 표시됩니다.  
-#### 중복된 책 등록 방지 기능
-![책_등록_중복_방지_AdobeExpress](https://user-images.githubusercontent.com/89637673/185832559-e82fbd00-dce1-4fc5-8315-fd0c4223359a.gif)  
-이미 등록되어있는 책을 등록하려고 할 경우 등록이 되지 않습니다.
 
+<details>
+<summary>코드 보기</summary>
+<div markdown="1">       
+
+버튼을 누를경우 resignResponder()함수를 통해 키보드를 내리고, CoreData의 미리 만들어둔 entity에 접근하여 setValue를 통해 값을 저장합니다.  
+filter함수를 통해 미리 저장되어있는 coreData의 데이터들과 현재 등록하는 책의 이름을 비교하여, 똑같은 책이름이 있을 경우 중복 등록을 방지합니다.
+```swift
+@objc func addBookButtonTapped() {
+        
+        self.review.resignFirstResponder()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        do {
+            let contact = try context.fetch(Book.fetchRequest()) as! [Book]
+            let overlap = contact.filter { book in
+                book.bookName?.description == self.bookName.text?.description
+            }
+            if overlap.count == 0 {
+                let entity = NSEntityDescription.entity(forEntityName: "Book", in: context)
+                if let entity = entity {
+                    let book = NSManagedObject(entity: entity, insertInto: context)
+                    book.setValue(bookName.text?.description, forKey: "bookName")
+                    book.setValue(bookImageStrValue, forKey: "bookImage")
+                    book.setValue(review.text, forKey: "bookReview")
+                }
+                do {
+                    try context.save()
+                } catch {
+                    print(error.localizedDescription)
+                }
+                guard let presentingViewController = self.presentingViewController as? UINavigationController else {return}
+                dismiss(animated: true) {
+                    print(presentingViewController)
+                    presentingViewController.popToRootViewController(animated: true)
+                }
+            } else {
+                print("이미 등록한 책입니다.")
+                let sheet = UIAlertController(title: "알림", message: "이미 등록한 책입니다.", preferredStyle: .alert)
+                sheet.addAction(UIAlertAction(title: "확인", style: .default, handler: { _ in
+                    self.dismiss(animated: true)
+                
+                }))
+                present(sheet, animated: true)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        
+    }
+```
+
+![책_등록_중복_방지_AdobeExpress](https://user-images.githubusercontent.com/89637673/185832559-e82fbd00-dce1-4fc5-8315-fd0c4223359a.gif)  
+
+</div>
+</details>
