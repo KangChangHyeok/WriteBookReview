@@ -23,8 +23,45 @@
 
 #### 책 검색하기 기능
 ![검색_기능_AdobeExpress](https://user-images.githubusercontent.com/89637673/185831850-08b44941-3621-4d4b-b62f-6b9d341546f8.gif)  
-등록할 책을 찾기위해 검색을 할 수 있습니다.
+등록할 책을 찾기위해 검색을 할 수 있습니다.  
 네이버 검색 API중 책을 검색할수 있는 API를 활용하여 검색기능을 구현했습니다. 표시되는 책의 갯수는 최대 10개입니다.  
+<details>
+<summary>코드 /summary>
+<div markdown="1">
+
+#### 네이버 책 검색 API에 get으로 호출하여 데이터를 불러오는 함수입니다.
+```swift
+func getUserSearchBookInformation(bookName: String, completion: @escaping (SearchResult) -> Void) {
+        let baseUrl = "https://openapi.naver.com/v1/search/book.json?"
+        
+        let parameters: Parameters = [
+            "query": "\(bookName)"]
+        
+        let headers: HTTPHeaders = [
+            "X-Naver-Client-Id": "idf3GPoDPvKowI7HsO3q",
+            "X-Naver-Client-Secret": "mcVtbh9DrT"]
+        
+        AF.request(
+            baseUrl,
+            method: .get,
+            parameters: parameters,
+            headers: headers)
+        .responseDecodable(of: SearchResult.self) { result in
+            switch result.result {
+            case .success(let success):
+                completion(success)
+                print("검색 성공")
+            case .failure(let error):
+                print(error)
+                print("검색 실패")
+            }
+        }
+    }
+```
+
+</div>
+</details>
+
 #### 책 등록 기능
 ![책_등록_기능_AdobeExpress](https://user-images.githubusercontent.com/89637673/185832278-8ca7be0d-cd87-4e52-b8d4-a8ab2f7afeed.gif)  
 이 앱의 핵심 기능입니다. 해당 셀을 누를 경우 책을 등록할수 있는 페이지로 이동합니다. 책의 간단한 정보를 보여주고 리뷰를 남길수 있습니다.  
