@@ -11,6 +11,7 @@ import SnapKit
 import SwiftUI
 import Kingfisher
 import CoreData
+
 //@available(iOS 14.0, *)
 //struct VCPreView:PreviewProvider {
 //    static var previews: some View {
@@ -203,6 +204,7 @@ extension MainViewController: UICollectionViewDataSource {
             }
             cell.bookName.text = self.bookNames[indexPath.row]
             cell.layer.cornerRadius = 10
+            cell.clipsToBounds = true
         }
         return cell
     }

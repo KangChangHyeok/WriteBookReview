@@ -28,9 +28,8 @@ class DataManager {
         .responseDecodable(of: SearchResult.self) { result in
             switch result.result {
             case .success(let success):
-                print("검색 성공")
                 completion(success)
-                
+                print("검색 성공")
             case .failure(let error):
                 print(error)
                 print("검색 실패")
