@@ -24,7 +24,7 @@
 ## 기능
 내가 읽었던 책들을 검색해서 찾은후, 책에 대한 리뷰를 남기고 책을 저장할 수 있는 독후감 어플입니다.
 
-## 구현영상
+## 고민 & 구현 
 #### 책 검색하기 기능
 ![검색_기능_AdobeExpress](https://user-images.githubusercontent.com/89637673/185831850-08b44941-3621-4d4b-b62f-6b9d341546f8.gif)  
 등록할 책을 찾기위해 검색을 할 수 있습니다.  
@@ -34,6 +34,8 @@
 <div markdown="1">
 
 #### 네이버 책 검색 API에 get으로 호출하여 데이터를 불러오는 함수입니다.
+네트워킹 관련 동작이 비동기적으로 실행되기 때문에 데이터를 사용하는 cell등 여러 곳에서 데이터가 다 들어오기도 전에 앱이 실행되어 꺼지는 것을 방지하기 위해,  
+escaping 클로저를 사용하여 데이터값을 보장받을수 있게 하였습니다.
 ```swift
 func getUserSearchBookInformation(bookName: String, completion: @escaping (SearchResult) -> Void) {
         let baseUrl = "https://openapi.naver.com/v1/search/book.json?"
@@ -63,8 +65,12 @@ func getUserSearchBookInformation(bookName: String, completion: @escaping (Searc
     }
 ```
 
-#### 키보드가 올라오게 되면 키보드의 높이만큼 컨텐츠를 가리게 됩니다. NotificationCenter의 keyboardWillShowNotification, keyboardWillHideNotification을 이용하여 키보드가 올라오고 내려올때마다 view의 크기를 조절하였습니다. 
-NotifiCationCenter AddObserver. 
+#### 검색을 하기 위해 키보드를 사용하게 되면 컨텐츠중 일부가 키보드에 가려져 보이지 않는 현상이 발생했습니다.  
+이를 해결하기 위하여 NotificationCenter에 기본적으로 내장되어있는 keyboardWillShowNotification와 keyboardWillHideNotification의 시점을 이용해 해결하였습니다.  
+처음에는 frame origin의 y값을 변경하여 뷰를 이동시켜서 구현하였으나, 이로 인해 기존에 키보드에 의해 가려지는 컨텐츠는 잘 보이나,  
+최상단 이동한 y값 만큼의 컨텐츠가 또 보이지 않는 현상이 발생하였습니다.  
+따라서 frame height 값을 키보드의 높이만큼 키우고 줄이는 방식을 사용해서 컨텐츠를 보두 화면에 보여주게 하고,  
+키보드의 위치도 확보하는 방향으로 구현을 완료했습니다.
         
 ```swift
 NotificationCenter.default.addObserver(self, selector: #selector(searchInProgress), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -97,9 +103,11 @@ NotificationCenter.default.addObserver(self, selector: #selector(endSearch), nam
 <details>
 <summary>코드 보기</summary>
 <div markdown="1">       
-
+처음에 앱을 기획할때부터 첫 출시 버전은 최대한 담백하게 만들고, 그 이후에 기능을 계속 추가하는 방식으로 만들도록 기획했기때문에,  
+데이터를 다루는 것들중 CoreData를 활용하여 구현했습니다.  
 버튼을 누를경우 resignResponder()함수를 통해 키보드를 내리고, CoreData의 미리 만들어둔 entity에 접근하여 setValue를 통해 값을 저장합니다.  
-filter함수를 통해 미리 저장되어있는 coreData의 데이터들과 현재 등록하는 책의 이름을 비교하여, 똑같은 책이름이 있을 경우 중복 등록을 방지합니다.
+filter함수를 통해 미리 저장되어있는 coreData의 데이터들과 현재 등록하는 책의 이름을 비교하여, 똑같은 책이름이 있을 경우 중복 등록을 방지합니다.  
+
 ```swift
 @objc func addBookButtonTapped() {
         
