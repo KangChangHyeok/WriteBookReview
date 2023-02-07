@@ -54,8 +54,7 @@ class SearchBookViewController: UIViewController {
         view.backgroundColor = .systemBackground
         self.navigationItem.rightBarButtonItem = searchBarButton
         self.navigationItem.titleView = bookSearchBar
-        NotificationCenter.default.addObserver(self, selector: #selector(searchInProgress), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(endSearch), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
         }
     //MARK: - @objc Method
     @objc func searchBarButtonTapped() {
@@ -77,16 +76,6 @@ class SearchBookViewController: UIViewController {
             self.searchResultTableView.reloadData()
             self.bookSearchBar.resignFirstResponder()
         }
-    }
-    @objc func searchInProgress(noti: Notification) {
-        guard let userInfo = noti.userInfo else {return}
-        guard let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {return}
-        self.view.frame.size.height -= keyboardFrame.height
-    }
-    @objc func endSearch(noti: Notification) {
-        guard let userInfo = noti.userInfo else {return}
-        guard let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {return}
-        self.view.frame.size.height += keyboardFrame.height
     }
 }
 

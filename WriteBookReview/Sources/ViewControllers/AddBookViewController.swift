@@ -134,17 +134,18 @@ class AddBookViewController: UIViewController {
         }
     }
     // MARK: - @objc Method
-
+    
     @objc func beginInputReview(noti: Notification) {
         guard let userInfo = noti.userInfo else {return}
         guard let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {return}
-        self.view.frame.size.height -= keyboardFrame.height
-        
+        scrollView.contentSize.height += keyboardFrame.height
+        scrollView.contentOffset.y = writeBookReviewLabel.frame.origin.y
     }
     @objc func endInputReview(noti: Notification) {
         guard let userInfo = noti.userInfo else {return}
         guard let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {return}
-        self.view.frame.size.height += keyboardFrame.height
+        scrollView.contentSize.height -= keyboardFrame.height
+        scrollView.contentOffset.y = view.bounds.origin.y
     }
     @objc func addBookButtonTapped() {
         
