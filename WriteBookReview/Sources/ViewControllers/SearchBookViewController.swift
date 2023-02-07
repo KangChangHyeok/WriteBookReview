@@ -25,7 +25,7 @@ class SearchBookViewController: UIViewController {
     private lazy var searchResultTableView = UITableView().then {
         $0.delegate = self
         $0.dataSource = self
-        $0.register(SearchResultTableViewCell.self, forCellReuseIdentifier: "Cell")
+        $0.register(SearchResultTableViewCell.self, forCellReuseIdentifier: "SearchResultTableViewCell")
         $0.rowHeight = 200
     }
     private lazy var searchBarButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchBarButtonTapped))
@@ -39,37 +39,24 @@ class SearchBookViewController: UIViewController {
     //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpValue()
-        setUpView()
-        setUpConstraints()
-        
+        setUpViewController()
     }
-    //MARK: - setUpValue
-    func setUpValue() {
-        //view 배경색 설정
-        view.backgroundColor = .systemBackground
-        //navigationItem
-        //오른쪽 검색 버튼 추가
-        self.navigationItem.rightBarButtonItem = searchBarButton
-        //가운데 타이틀에 서치바 추가
-        self.navigationItem.titleView = bookSearchBar
-        //notificationCenter
-        NotificationCenter.default.addObserver(self, selector: #selector(searchInProgress), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(endSearch), name: UIResponder.keyboardWillHideNotification, object: nil)
-
-        }
-    //MARK: - setUpView
-    func setUpView() {
+    override func viewDidLayoutSubviews() {
         view.addSubview(searchResultTableView)
-    }
-    //MARK: - setUpConstraints
-    func setUpConstraints() {
         
         searchResultTableView.snp.makeConstraints {
             $0.trailing.leading.top.equalTo(view.safeAreaLayoutGuide)
             $0.bottom.equalToSuperview()
         }
     }
+    //MARK: - setUpValue
+    func setUpViewController() {
+        view.backgroundColor = .systemBackground
+        self.navigationItem.rightBarButtonItem = searchBarButton
+        self.navigationItem.titleView = bookSearchBar
+        NotificationCenter.default.addObserver(self, selector: #selector(searchInProgress), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(endSearch), name: UIResponder.keyboardWillHideNotification, object: nil)
+        }
     //MARK: - @objc Method
     @objc func searchBarButtonTapped() {
         guard let bookName = self.bookSearchBar.text else {return}
@@ -110,7 +97,7 @@ extension SearchBookViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! SearchResultTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultTableViewCell", for: indexPath) as! SearchResultTableViewCell
         cell.bookName.text = self.bookName[indexPath.row]
         cell.bookImage.kf.setImage(with: URL(string: self.bookImage[indexPath.row]))
         cell.author.text = self.author[indexPath.row]
