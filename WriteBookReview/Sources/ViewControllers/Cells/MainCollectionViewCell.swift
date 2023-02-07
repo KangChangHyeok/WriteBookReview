@@ -8,32 +8,23 @@
 import UIKit
 import SnapKit
 import CoreData
+
+
 class MainCollectionViewCell: UICollectionViewCell {
-    //MARK: - UI Configure
+    //MARK: - properties
     var imageView = UIImageView().then {
         $0.backgroundColor = .systemBackground
     }
     var bookName = UILabel().then{
         $0.numberOfLines = 0
     }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setUpView()
-        setUpConstraints()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    //MARK: - setUpView
-    func setUpView() {
+    // MARK: - layout
+
+    override func layoutSubviews() {
         [imageView, bookName].forEach {
             addSubview($0)
         }
-    }
-    //MARK: - setUpConstraints
-    func setUpConstraints() {
+        
         imageView.snp.makeConstraints {
             $0.trailing.leading.top.equalToSuperview()
         }

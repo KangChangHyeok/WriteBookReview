@@ -70,6 +70,7 @@ class AddBookViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(beginInputReview), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(endInputReview), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
+    // MARK: - layout
     override func viewDidLayoutSubviews() {
         view.addSubview(scrollView)
         

@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 class SearchResultTableViewCell: UITableViewCell {
-    //MARK: - UI Configure
+    //MARK: - properties
     var bookImage = UIImageView().then {
         $0.backgroundColor = .black
     }
@@ -19,27 +19,13 @@ class SearchResultTableViewCell: UITableViewCell {
     var author = UILabel().then {
         $0.numberOfLines = 0
     }
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .none
-        setUpView()
-        setUpConstraints()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-    //MARK: - setUpView
-    func setUpView() {
+    // MARK: - layout
+
+    override func layoutSubviews() {
         [bookImage, bookName, author].forEach {
             addSubview($0)
         }
-    }
-    //MARK: - setUpConstraints
-    func setUpConstraints() {
+        
         bookImage.snp.makeConstraints { make in
             make.leading.top.equalToSuperview().offset(10)
             make.bottom.equalToSuperview().offset(-10)

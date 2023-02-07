@@ -113,6 +113,14 @@ class MainViewController: UIViewController {
         mainColletionView.reloadData()
         
     }
+    func setUpViewController() {
+        view.backgroundColor = .systemBackground
+        self.navigationController?.navigationBar.tintColor = .black
+        let backBarButton = UIBarButtonItem(title: nil, style: .plain, target: self, action: nil)
+        self.navigationItem.backBarButtonItem = backBarButton
+    }
+    // MARK: - layout
+
     override func viewDidLayoutSubviews() {
         view.addSubview(searchButton)
         view.addSubview(mainColletionView)
@@ -128,12 +136,7 @@ class MainViewController: UIViewController {
             $0.height.equalTo(view.frame.height / 10)
         }
     }
-    func setUpViewController() {
-        view.backgroundColor = .systemBackground
-        self.navigationController?.navigationBar.tintColor = .black
-        let backBarButton = UIBarButtonItem(title: nil, style: .plain, target: self, action: nil)
-        self.navigationItem.backBarButtonItem = backBarButton
-    }
+    
     // MARK: - @objc Method
 
     @objc func searchBookButtonTapped() {
