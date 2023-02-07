@@ -10,16 +10,6 @@ import SwiftUI
 import Then
 import SnapKit
 
-//@available(iOS 14.0, *)
-//struct VCPreView:PreviewProvider {
-//    static var previews: some View {
-//        Group {
-//            UINavigationController(rootViewController: BookInformationViewController()).toPreview().ignoresSafeArea()
-//            UINavigationController(rootViewController: BookInformationViewController()).toPreview().previewDevice("iPhone 8")
-//        }
-//    }
-//}
-
 class BookInformationViewController: UIViewController {
 
     private lazy var scrollView = UIScrollView().then {

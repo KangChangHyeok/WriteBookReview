@@ -12,16 +12,6 @@ import SwiftUI
 import Kingfisher
 import CoreData
 
-//@available(iOS 14.0, *)
-//struct VCPreView:PreviewProvider {
-//    static var previews: some View {
-//        Group {
-//            UINavigationController(rootViewController: MainViewController()).toPreview().ignoresSafeArea()
-//            UINavigationController(rootViewController: MainViewController()).toPreview().previewDevice("iPhone 8")
-//        }
-//    }
-//}
-
 class MainViewController: UIViewController {
     //MARK: - UI Configure
     //navigation Controller 에러 해결 코드

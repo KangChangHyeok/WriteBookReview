@@ -9,15 +9,6 @@ import UIKit
 import SwiftUI
 import SnapKit
 import Kingfisher
-//struct SearchBookVCPreView:PreviewProvider {
-//    static var previews: some View {
-//        Group {
-//            SearchBookViewController().toPreview()
-//            SearchBookViewController().toPreview().previewDevice("iPhone 8")
-//        }
-//    }
-//}
-
 
 class SearchBookViewController: UIViewController {
     //MARK: - UI Configure
