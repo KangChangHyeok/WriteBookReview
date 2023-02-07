@@ -11,7 +11,7 @@ import SnapKit
 import Kingfisher
 
 class SearchBookViewController: UIViewController {
-    //MARK: - UI Configure
+    //MARK: - properties
     private lazy var bookSearchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 0)).then {
         $0.placeholder = "책 이름을 입력해주세요."
         $0.barTintColor = .systemBackground
@@ -36,7 +36,7 @@ class SearchBookViewController: UIViewController {
     private var author = [String]()
     private var bookDescription = [String]()
     private var bookCount = 0
-    //MARK: - Life cycle
+    //MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViewController()
@@ -49,7 +49,6 @@ class SearchBookViewController: UIViewController {
             $0.bottom.equalToSuperview()
         }
     }
-    //MARK: - setUpValue
     func setUpViewController() {
         view.backgroundColor = .systemBackground
         self.navigationItem.rightBarButtonItem = searchBarButton

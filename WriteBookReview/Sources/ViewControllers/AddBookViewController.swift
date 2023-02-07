@@ -11,7 +11,7 @@ import SnapKit
 import CoreData
 
 class AddBookViewController: UIViewController {
-    //MARK: - UI Configure
+    //MARK: - properties
     
     private lazy var scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
@@ -55,10 +55,14 @@ class AddBookViewController: UIViewController {
         $0.backgroundColor = .black
         $0.addTarget(self, action: #selector(addBookButtonTapped), for: .touchUpInside)
     }
-    //MARK: - Life cycle
+    //MARK: - lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViewContrller()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
     }
     func setUpViewContrller() {
         view.backgroundColor = .systemBackground
@@ -128,10 +132,8 @@ class AddBookViewController: UIViewController {
             make.height.equalTo(view.frame.height / 10)
         }
     }
-    override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-    }
+    // MARK: - @objc Method
+
     @objc func beginInputReview(noti: Notification) {
         guard let userInfo = noti.userInfo else {return}
         guard let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {return}
@@ -185,7 +187,8 @@ class AddBookViewController: UIViewController {
         }
     }
 }
-//리뷰 작성 글자갯수 500개로 제한
+// MARK: - extension
+
 extension AddBookViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {

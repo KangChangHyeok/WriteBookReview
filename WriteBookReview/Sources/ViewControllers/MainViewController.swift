@@ -13,7 +13,8 @@ import Kingfisher
 import CoreData
 
 class MainViewController: UIViewController {
-    
+    // MARK: - properties
+
     private lazy var mainColletionView = UICollectionView(frame: .zero, collectionViewLayout: mainCollectionViewFlowLayout).then {
         $0.delegate = self
         $0.dataSource = self
@@ -37,7 +38,7 @@ class MainViewController: UIViewController {
     private var bookNames = [String?]()
     private var bookReviews = [String?]()
     
-    //MARK: - Life cycle
+    //MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViewController()
@@ -113,8 +114,6 @@ class MainViewController: UIViewController {
         
     }
     override func viewDidLayoutSubviews() {
-        
-        
         view.addSubview(searchButton)
         view.addSubview(mainColletionView)
         
@@ -135,6 +134,8 @@ class MainViewController: UIViewController {
         let backBarButton = UIBarButtonItem(title: nil, style: .plain, target: self, action: nil)
         self.navigationItem.backBarButtonItem = backBarButton
     }
+    // MARK: - @objc Method
+
     @objc func searchBookButtonTapped() {
         navigationController?.pushViewController(SearchBookViewController(), animated: true)
     }
@@ -185,7 +186,6 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegate
             } else {
                 $0.review.text = "리뷰를 작성하지 않았습니다!"
             }
-            
         }
         navigationController?.pushViewController(bookInformationViewController, animated: true)
     }
