@@ -13,27 +13,18 @@ import Kingfisher
 import CoreData
 
 class MainViewController: UIViewController {
-    //MARK: - UI Configure
-    //navigation Controller 에러 해결 코드
-    private lazy var appearance = UINavigationBarAppearance().then {
-        $0.configureWithTransparentBackground()
-        $0.backgroundColor = UIColor.systemBackground
-        $0.titleTextAttributes = [.foregroundColor: UIColor.black]
-        navigationItem.standardAppearance = $0
-        navigationItem.scrollEdgeAppearance = $0
-    }
-    
-    private var mainCollectionViewFlowLayout = UICollectionViewFlowLayout().then {
-        $0.scrollDirection = .vertical
-        $0.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-    }
+    // MARK: - properties
+
     private lazy var mainColletionView = UICollectionView(frame: .zero, collectionViewLayout: mainCollectionViewFlowLayout).then {
         $0.delegate = self
         $0.dataSource = self
         $0.backgroundColor = .systemGray6
         $0.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
     }
-    
+    private var mainCollectionViewFlowLayout = UICollectionViewFlowLayout().then {
+        $0.scrollDirection = .vertical
+        $0.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+    }
     private let searchButton = UIButton().then {
         $0.setTitle("내가 읽은 책 찾기", for: .normal)
         $0.tintColor = .black
@@ -47,17 +38,12 @@ class MainViewController: UIViewController {
     private var bookNames = [String?]()
     private var bookReviews = [String?]()
     
-    //MARK: - Life cycle
+    //MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpValue()
-        setUpView()
-        setUpConstraints()
-        
+        setUpViewController()
     }
     override func viewWillAppear(_ animated: Bool) {
-        
-        
         
         bookNames = {
             var bookNames = [String?]()
@@ -127,48 +113,32 @@ class MainViewController: UIViewController {
         mainColletionView.reloadData()
         
     }
-    //MARK: - setUpValue
-    func setUpValue() {
-        //배경화면 색 설정
+    func setUpViewController() {
         view.backgroundColor = .systemBackground
-        //navigationBar의 모든 항목의 색을 검은색으로
         self.navigationController?.navigationBar.tintColor = .black
-        //오른쪽에 Menu 버튼 추가
-//        let rightBarButton = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(rigthBarButtonTouched))
-//        navigationItem.rightBarButtonItem = rightBarButton
-        
-        
-        //backBarButtonItem
         let backBarButton = UIBarButtonItem(title: nil, style: .plain, target: self, action: nil)
         self.navigationItem.backBarButtonItem = backBarButton
     }
-    //MARK: - setUpView
-    func setUpView() {
-        [searchButton, mainColletionView].forEach {
-            view.addSubview($0)
-        }
-    }
-    //MARK: - setUpConstraints
-    func setUpConstraints() {
-        //컬렉션뷰 레이아웃 설정
-        self.mainColletionView.snp.makeConstraints {
+    // MARK: - layout
+
+    override func viewDidLayoutSubviews() {
+        view.addSubview(searchButton)
+        view.addSubview(mainColletionView)
+        
+        mainColletionView.snp.makeConstraints {
             $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.bottom.equalTo(searchButton.snp.top)
         }
-        //하단 검색하기 버튼 레이아웃 설정
-        self.searchButton.snp.makeConstraints {
+        searchButton.snp.makeConstraints {
             $0.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.bottom.equalToSuperview()
             $0.height.equalTo(view.frame.height / 10)
         }
     }
     
-    @objc func rigthBarButtonTouched() {
-        print("touch")
-        
-    }
-    
+    // MARK: - @objc Method
+
     @objc func searchBookButtonTapped() {
         navigationController?.pushViewController(SearchBookViewController(), animated: true)
     }
@@ -176,7 +146,6 @@ class MainViewController: UIViewController {
 //MARK: - extension
 extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         return bookCount!
     }
     
@@ -220,7 +189,6 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDelegate
             } else {
                 $0.review.text = "리뷰를 작성하지 않았습니다!"
             }
-            
         }
         navigationController?.pushViewController(bookInformationViewController, animated: true)
     }

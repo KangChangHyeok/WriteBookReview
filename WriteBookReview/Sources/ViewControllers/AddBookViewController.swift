@@ -10,16 +10,8 @@ import SwiftUI
 import SnapKit
 import CoreData
 
-//struct AddBookVCPreView:PreviewProvider {
-//    static var previews: some View {
-//        Group {
-//            AddBookViewController().toPreview()
-//            AddBookViewController().toPreview().previewDevice("iPhone 8")
-//        }
-//    }
-//}
 class AddBookViewController: UIViewController {
-    //MARK: - UI Configure
+    //MARK: - properties
     
     private lazy var scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
@@ -63,41 +55,34 @@ class AddBookViewController: UIViewController {
         $0.backgroundColor = .black
         $0.addTarget(self, action: #selector(addBookButtonTapped), for: .touchUpInside)
     }
-    //MARK: - Life cycle
+    //MARK: - lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpValue()
-        setUpView()
-        setUpConstraints()
+        setUpViewContrller()
     }
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
     }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print(#function)
-    }
-    func setUpValue() {
+    func setUpViewContrller() {
         view.backgroundColor = .systemBackground
         //notification addobserver
         NotificationCenter.default.addObserver(self, selector: #selector(beginInputReview), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(endInputReview), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    func setUpView() {
-        
+    // MARK: - layout
+    override func viewDidLayoutSubviews() {
         view.addSubview(scrollView)
+        
         scrollView.addSubview(contentsView)
         [pagetitle, bookImage, bookName, review, AddBookButton, author, bookDescription, writeBookReviewLabel].forEach {
             contentsView.addSubview($0)
         }
-    }
-    func setUpConstraints() {
-        //스크롤뷰 레이아웃
+        
         scrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(20)
         }
-        //contentsView 레이아웃
+
         contentsView.snp.makeConstraints { make in
             make.edges.equalTo(0)
             make.width.equalToSuperview()
@@ -147,8 +132,9 @@ class AddBookViewController: UIViewController {
             make.bottom.equalToSuperview().offset(-30)
             make.height.equalTo(view.frame.height / 10)
         }
-        
     }
+    // MARK: - @objc Method
+
     @objc func beginInputReview(noti: Notification) {
         guard let userInfo = noti.userInfo else {return}
         guard let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {return}
@@ -200,11 +186,10 @@ class AddBookViewController: UIViewController {
         } catch {
             print(error.localizedDescription)
         }
-        
-        
     }
 }
-//리뷰 작성 글자갯수 500개로 제한
+// MARK: - extension
+
 extension AddBookViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {

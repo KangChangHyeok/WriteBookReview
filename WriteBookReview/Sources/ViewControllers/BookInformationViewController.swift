@@ -11,7 +11,7 @@ import Then
 import SnapKit
 
 class BookInformationViewController: UIViewController {
-
+    // MARK: - properties
     private lazy var scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
@@ -43,29 +43,26 @@ class BookInformationViewController: UIViewController {
     var review = UILabel().then {
         $0.numberOfLines = 0
     }
-    
+    // MARK: - life cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpValue()
-        setUpView()
-        setUpConstraints()
+        setUpViewController()
     }
-    func setUpValue() {
+    func setUpViewController() {
         view.backgroundColor = .systemBackground
     }
-    func setUpView() {
+    // MARK: - layout
+    override func viewDidLayoutSubviews() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentsView)
         [pagetitle, bookImage, bookName, review, author, bookDescription, writeBookReviewLabel].forEach {
             contentsView.addSubview($0)
         }
-    }
-    func setUpConstraints() {
-        //스크롤뷰 레이아웃
+        
         scrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(20)
         }
-        //contentsView 레이아웃
         contentsView.snp.makeConstraints { make in
             make.edges.equalTo(0)
             make.width.equalToSuperview()
